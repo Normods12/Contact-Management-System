@@ -2,57 +2,46 @@ package com.contacts.Entity;
 
 
 import jakarta.persistence.*;
+import lombok.Data;
+import org.springframework.data.annotation.CreatedDate;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
+
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
+@EntityListeners(AuditingEntityListener.class)
+@Data
 public class Users {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
-    private String username;
+
+    @Column(nullable = false)
+    private String firstName;
+    @Column(nullable = true)
+    private String lastName;
+    @Column(nullable = false,unique = true)
+    private String email;
+    @Column(nullable = false)
     private String password;
     public enum Role {
         USER, ADMIN
     }
 
     @Enumerated(EnumType.STRING)
+    @Column(nullable = false)
     private Role role;
+    @Column(updatable = false)
+    @CreatedDate
+    private LocalDate createdDate;
 
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Contact> contacts = new ArrayList<>();
 
-
-    public Role getRole() { return role; }
-    public void setRole(Role role) { this.role = role; }
-
-    @Override
-    public String toString() {
-        return "Users{" +
-                "id=" + id +
-                ", username='" + username + '\'' +
-                ", password='" + password + '\'' +
-                '}';
-    }
-
-    public int getId() {
-        return id;
-    }
-
-    public void setId(int id) {
-        this.id = id;
-    }
-
-    public String getUsername() {
-        return username;
-    }
-
-    public void setUsername(String username) {
-        this.username = username;
-    }
-
-    public String getPassword() {
-        return password;
-    }
-
-    public void setPassword(String password) {
-        this.password = password;
-    }
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Group> groups = new ArrayList<>();
 }

@@ -13,8 +13,7 @@ import org.springframework.stereotype.Service;
 public class UserService {
 
 
-    @Autowired
-    private UserRepo userRepo;
+
 @Autowired
     private AuthenticationManager authmanager;
 
@@ -31,14 +30,14 @@ private JWTService jwtService;
     // Master Login Method
     public String verify(Users user) {
         Authentication authentication = authmanager.authenticate(
-                new UsernamePasswordAuthenticationToken(user.getUsername(), user.getPassword()));
+                new UsernamePasswordAuthenticationToken(user.getEmail(), user.getPassword()));
 
         if (authentication.isAuthenticated()) {
             // ALWAYS fetch the real user from DB to get the true role
-            Users realUser = usersRepository.findByUsername(user.getUsername());
+            Users realUser = usersRepository.findByEmail(user.getEmail());
 
             // Pass both username and role to the JWT Service
-            return jwtService.generateToken(realUser.getUsername(), realUser.getRole());
+            return jwtService.generateToken(realUser.getEmail(), realUser.getRole());
         }
         return "Fail";
     }
