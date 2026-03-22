@@ -1,5 +1,7 @@
 package com.contacts.Service;
 
+import com.contacts.Exception.ResourceNotFoundException;
+import com.contacts.Exception.UnauthorizedResourceAccessException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
@@ -71,16 +73,15 @@ public class GroupService {
 
         Users user = getCurrentUser();
 
-        Group group = groupRepository.findById(id).orElse(null);
+        Group group = groupRepository.findById(id)
+                .orElseThrow(()->  new ResourceNotFoundException("Group not found"));
 
-        if (group == null) {
-            throw new RuntimeException("Group not found");
-        }
+
 
         if (group.getUser() == null || 
         	    group.getUser().getId() != user.getId()) {
 
-        	    throw new RuntimeException("Unauthorized");
+        	    throw new UnauthorizedResourceAccessException("Unauthorized Access");
         	}
         group.setName(request.getName());
         group.setColorTag(request.getColorTag());
@@ -95,16 +96,13 @@ public class GroupService {
 
         Users user = getCurrentUser();
 
-        Group group = groupRepository.findById(id).orElse(null);
+        Group group = groupRepository.findById(id).orElseThrow(()->  new ResourceNotFoundException("Group not found"));
 
-        if (group == null) {
-            throw new RuntimeException("Group not found");
-        }
 
         if (group.getUser() == null || 
         	    group.getUser().getId() != user.getId()) {
 
-        	    throw new RuntimeException("Unauthorized");
+        	    throw new UnauthorizedResourceAccessException("Unauthorized Access");
         	}
 
         // 🧩 Remove group reference from contacts
@@ -122,16 +120,13 @@ public class GroupService {
 
         Users user = getCurrentUser();
 
-        Group group = groupRepository.findById(groupId).orElse(null);
-
-        if (group == null) {
-            throw new RuntimeException("Group not found");
-        }
+        Group group = groupRepository.findById(groupId)
+                .orElseThrow(()->  new ResourceNotFoundException("Group not found"));
 
         if (group.getUser() == null || 
         	    group.getUser().getId() != user.getId()) {
 
-        	    throw new RuntimeException("Unauthorized");
+        	    throw new UnauthorizedResourceAccessException("Unauthorized Access");
         	}
         List<Contact> contacts = contactRepository.findByGroupId(groupId);
 
@@ -145,29 +140,26 @@ public class GroupService {
 
         Users user = getCurrentUser();
 
-        Contact contact = contactRepository.findById(contactId).orElse(null);
+        Contact contact = contactRepository.findById(contactId)
+                .orElseThrow(()->  new ResourceNotFoundException("Contact not found"));
 
-        if (contact == null) {
-            throw new RuntimeException("Contact not found");
-        }
+
 
 
         if (contact.getUser() == null || 
         	    contact.getUser().getId() != user.getId()) {
 
-        	    throw new RuntimeException("Unauthorized");
+        	    throw new UnauthorizedResourceAccessException("Unauthorized Access");
          }
 
-        Group group = groupRepository.findById(request.getGroupId()).orElse(null);
+        Group group = groupRepository.findById(request.getGroupId())
+                .orElseThrow(()->  new ResourceNotFoundException("Group not found"));
 
-        if (group == null) {
-            throw new RuntimeException("Group not found");
-        }
 
         if (group.getUser() == null || 
         	    group.getUser().getId() != user.getId()) {
 
-        	    throw new RuntimeException("Unauthorized");
+        	    throw new UnauthorizedResourceAccessException("Unauthorized Access");
         	}
 
         // Move contact

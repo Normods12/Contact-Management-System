@@ -3,6 +3,7 @@ package com.contacts.Service;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import com.contacts.Exception.ResourceNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -32,12 +33,14 @@ public class ContactService {
     }
 
     public ContactDTO getById(Long id) {
-        Contact contact = contactRepository.findById(id).orElseThrow();
+        Contact contact = contactRepository.findById(id)
+                .orElseThrow(()->  new ResourceNotFoundException("Contact not found"));
         return ContactMapper.toDTO(contact);
     }
 
     public ContactDTO update(Long id, ContactDTO dto) {
-        Contact contact = contactRepository.findById(id).orElseThrow();
+        Contact contact = contactRepository.findById(id)
+                .orElseThrow(()->  new ResourceNotFoundException("Contact not found"));
 
         contact.setFirstName(dto.getFirstName());
         contact.setLastName(dto.getLastName());
@@ -70,7 +73,8 @@ public class ContactService {
     }
 
     public ContactDTO toggleFavourite(Long id) {
-        Contact contact = contactRepository.findById(id).orElseThrow();
+        Contact contact = contactRepository.findById(id)
+                .orElseThrow(()-> new ResourceNotFoundException("Contact Not Found"));
 
         Boolean fav = contact.getIsFavourite();
         contact.setIsFavourite(fav == null ? true : !fav);
