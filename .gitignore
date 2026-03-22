@@ -5,6 +5,7 @@ target/
 !**/src/test/**/target/
 
 ### STS ###
+.env
 .apt_generated
 .classpath
 .factorypath
@@ -39,3 +40,6 @@ build/
 # Build folders
 bin/
 target/
+
+# Ignore Environment Variables
+.env
