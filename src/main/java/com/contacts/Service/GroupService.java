@@ -153,7 +153,7 @@ public class GroupService {
 
 
         if (contact.getUser() == null || 
-        	    user.getId() != user.getId()) {
+        	    contact.getUser().getId() != user.getId()) {
 
         	    throw new RuntimeException("Unauthorized");
          }
