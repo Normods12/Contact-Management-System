@@ -6,6 +6,7 @@ import com.contacts.Entity.Users;
 import com.contacts.Repository.ContactRepo;
 import com.contacts.Repository.GroupRepository;
 import com.contacts.Repository.UserRepo;
+import jakarta.transaction.Transactional;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -42,11 +43,13 @@ public class AdminService {
         return usersList;
     }
 
-    public void deleteUser(long id) {
+    @Transactional
+    public UsersResponseDto deleteUser(long id) {
         log.debug("Checking if user Exists");
-        Users user = userRepo.findById((int)id)
+        Users user = userRepo.findById(id)
                 .orElseThrow(()-> new RuntimeException("User not found"));
         userRepo.delete(user);
+        return new UsersResponseDto(user.getId(),user.getFirstName(),user.getEmail());
     }
 
     public StatsResponseDto displayStats() {

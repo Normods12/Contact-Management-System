@@ -7,6 +7,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -22,6 +23,7 @@ public class AdminController {
     private AdminService adminService;
 
     @GetMapping("/users")
+    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<List<UsersResponseDto>> getAllUsers(){
         log.info("Received request to get all users");
         List<UsersResponseDto> usersResponseDto = adminService.getAllUsers();
@@ -30,14 +32,16 @@ public class AdminController {
     }
 
     @DeleteMapping("/users/{id}")
-    public ResponseEntity<> deleteUser(@PathVariable Long id){
+    @PreAuthorize("hasRole('ADMIN')")
+    public ResponseEntity<UsersResponseDto> deleteUser(@PathVariable Long id){
         log.info("Received request to delete user {}", id);
-        adminService.deleteUser(id);
+       UsersResponseDto dto =  adminService.deleteUser(id);
         log.info("Deleted user {}", id);
-        return new ResponseEntity<>(HttpStatus.OK);
+        return new ResponseEntity<>(dto,HttpStatus.OK);
     }
 
     @GetMapping("/stats")
+    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<StatsResponseDto> displayStats(){
         log.info("Received request to display stats");
         StatsResponseDto dto = adminService.displayStats();
