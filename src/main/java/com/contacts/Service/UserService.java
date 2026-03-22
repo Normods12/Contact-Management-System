@@ -53,4 +53,10 @@ private JWTService jwtService;
         }
         return usersRepository.save(user);
     }
+    
+    public Users getById(Long id) {
+        return usersRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("User not found"));
+    }
+    
 }

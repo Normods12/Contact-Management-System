@@ -1,3 +1,4 @@
+
 package com.contacts.config;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,7 +34,7 @@ public class SecurityConfig {
 
         return  http
                 .cors(Customizer.withDefaults())
-                .csrf(customizer -> customizer.disable())
+                .csrf(csrf -> csrf.disable())  
                 .authorizeHttpRequests(authorize -> authorize
                         .requestMatchers("/login","/register")
                         .permitAll()
