@@ -40,3 +40,6 @@ build/
 # Build folders
 bin/
 target/
+
+# Ignore Environment Variables
+.env
