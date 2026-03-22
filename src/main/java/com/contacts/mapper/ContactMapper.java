@@ -1,14 +1,19 @@
 package com.contacts.mapper;
 
-import com.contacts.Dto.ContactDTO;
-import com.contacts.Entity.Contact;
+import com.contacts.dto.ContactDTO;
+import com.contacts.dto.ContactResponse;
+import com.contacts.dto.ModifyContactDto;
+import com.contacts.entity.Contact;
+import org.mapstruct.Mapper;
+import org.mapstruct.MappingTarget;
+import org.mapstruct.NullValuePropertyMappingStrategy;
 
 public class ContactMapper {
 
     public static ContactDTO toDTO(Contact contact) {
         ContactDTO dto = new ContactDTO();
 
-        dto.setId(contact.getId());
+
         dto.setFirstName(contact.getFirstName());
         dto.setLastName(contact.getLastName());
         dto.setPhone(contact.getPhone());
@@ -35,4 +40,25 @@ public class ContactMapper {
 
         return contact;
     }
+
+    public static ContactResponse toResponse(Contact contact) {
+        ContactResponse dto = new ContactResponse();
+
+        dto.setId(contact.getId());
+        dto.setFirstName(contact.getFirstName());
+        dto.setLastName(contact.getLastName());
+        dto.setPhone(contact.getPhone());
+        dto.setEmail(contact.getEmail());
+        dto.setIsFavourite(contact.getIsFavourite());
+
+        return dto;
+    }
+
+
+    @Mapper(componentModel = "spring",
+            nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)
+    public interface ContactMappers {
+        void updateContactFromDto(ModifyContactDto dto, @MappingTarget Contact contact);
+    }
+
 }
