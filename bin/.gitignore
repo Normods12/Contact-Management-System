@@ -31,11 +31,3 @@ build/
 
 ### VS Code ###
 .vscode/
-/bin/
-
-# Compiled Java files
-*.class
-
-# Build folders
-bin/
-target/

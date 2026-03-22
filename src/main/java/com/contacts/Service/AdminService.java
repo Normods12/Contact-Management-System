@@ -3,6 +3,8 @@ package com.contacts.Service;
 import com.contacts.Dto.StatsResponseDto;
 import com.contacts.Dto.UsersResponseDto;
 import com.contacts.Entity.Users;
+import com.contacts.Repository.ContactRepo;
+import com.contacts.Repository.GroupRepository;
 import com.contacts.Repository.UserRepo;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
