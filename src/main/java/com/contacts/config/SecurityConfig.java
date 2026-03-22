@@ -19,6 +19,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
+
 @Configuration
 @EnableWebSecurity
 @EnableMethodSecurity
@@ -28,7 +29,7 @@ public class SecurityConfig {
     private UserDetailsService userDetailsService;
 
     @Autowired
-    private JwtFilter jwtFilter;
+    private JwtFilte jwtFilter;
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
