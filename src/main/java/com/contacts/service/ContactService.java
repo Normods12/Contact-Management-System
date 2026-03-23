@@ -120,7 +120,7 @@ public class ContactService {
         log.debug("Checking if contact exists");
         Contact contact = contactRepository.findById(id)
                 .orElseThrow(()-> new ResourceNotFoundException("Contact Not Found"));
-        log.info("Toggleing favourite contact {}", contact);
+        log.info("Toggling favourite contact {}", contact);
         contact.setIsFavourite(!contact.getIsFavourite());
         return ContactMapper.toResponse(contactRepository.save(contact));
     }
