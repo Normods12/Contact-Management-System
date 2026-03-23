@@ -2,6 +2,7 @@ package com.contacts.service;
 
 import com.contacts.exception.ResourceNotFoundException;
 import com.contacts.exception.UnauthorizedResourceAccessException;
+import com.contacts.repository.ContactRepo;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -19,6 +20,7 @@ import com.contacts.repository.ContactRepository;
 import com.contacts.repository.GroupRepository;
 import com.contacts.repository.UserRepo;
 
+import java.security.Principal;
 import java.util.List;
 
 @Service
@@ -26,8 +28,9 @@ import java.util.List;
 @Slf4j
 public class GroupService {
     private final GroupRepository groupRepository;
-    private final ContactRepository contactRepository;
+
     private final UserRepo userRepository;
+    private final ContactRepo contactRepository;
 
     private Users getCurrentUser() {
         log.debug("Extracting email from Security Context");
@@ -200,5 +203,18 @@ public class GroupService {
         res.setEmail(c.getEmail());
         res.setIsFavourite(c.getIsFavourite());
         return res;
+    }
+
+
+    public void addContactToGroup(Long groupId, Long contactId, Principal principal) {
+        Users user = userRepository.findByEmail(principal.getName());
+
+        Group group = groupRepository.findByIdAndUser(groupId, user);
+
+        Contact contact = contactRepository.findByIdAndUser(contactId, user);
+
+
+        contact.setGroup(group);
+        contactRepository.save(contact);
     }
 }

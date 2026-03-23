@@ -11,11 +11,13 @@ import org.springframework.data.repository.query.Param;
 
 public interface ContactRepo extends JpaRepository<Contact, Long>{
 
+    List<Contact> findByGroupId(Long groupId);
 	List<Contact> findByUserId(Long userId);
 	List<Contact> findByUser(Users user);
 	List<Contact> findByUserAndIsFavouriteTrue(Users user);
 	List<Contact> findByFirstNameContainingIgnoreCaseOrEmailContainingIgnoreCaseOrPhoneContaining(
 		        String name, String email, String phone );
+    Contact findByIdAndUser(Long contactId, Users user);
 
     List<Contact> findByUserIdAndIsFavouriteTrue(Long userId);
     @Query("SELECT c FROM Contact c WHERE c.user = :user AND (" +

@@ -64,7 +64,7 @@ public class ContactController {
 	    }
 
 	    // UPDATE
-	    @PutMapping("/contacts/{id}")
+	    @PutMapping("/contacts/{id}/edit")
 	    public ResponseEntity<ContactResponse> update(@PathVariable Long id, @RequestBody ModifyContactDto dto,Principal principal) {
 	        log.info("Received Request to Update Contact: ",id);
             ContactResponse response = contactService.update(id,dto);
@@ -85,13 +85,13 @@ public class ContactController {
 
 	    // SEARCH
 
-        @GetMapping("/search")
-        public ResponseEntity<List<ContactResponse>> search(@RequestParam String q, Principal principal) {
-            log.info("Received Request to Search Contacts");
-            List<ContactResponse> responses = contactService.search(q,principal);
-            log.info("Fetched Contacts Successfully : ",responses);
-            return new ResponseEntity<>(responses, HttpStatus.OK);
-        }
+            @GetMapping("/search")
+            public ResponseEntity<List<ContactResponse>> search(@RequestParam String q, Principal principal) {
+                log.info("Received Request to Search Contacts");
+                List<ContactResponse> responses = contactService.search(q,principal);
+                log.info("Fetched Contacts Successfully : ",responses);
+                return new ResponseEntity<>(responses, HttpStatus.OK);
+            }
 
 	    // FAVOURITES
 	    @GetMapping("/contacts/favourites")
