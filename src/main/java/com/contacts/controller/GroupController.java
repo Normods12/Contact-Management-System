@@ -3,6 +3,8 @@ package com.contacts.controller;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import com.contacts.dto.ContactResponse;
@@ -12,6 +14,7 @@ import com.contacts.dto.MoveContactRequest;
 import com.contacts.dto.UpdatedGroupRequest;
 import com.contacts.service.GroupService;
 
+import java.security.Principal;
 import java.util.List;
 
 @RestController
@@ -60,4 +63,17 @@ public class GroupController {
         log.info("Received request to move contact ID: {} to group ID: {}", id, request.getGroupId());
         return groupService.moveContactToGroup(id, request);
     }
+
+    @PostMapping("/groups/{groupId}/contacts/{contactId}")
+    public ResponseEntity<String> addContactToGroup(
+            @PathVariable Long groupId,
+            @PathVariable Long contactId,
+            Principal principal) {
+
+        log.info("Received Request to add Contact ID: {} to Group ID: {}", contactId, groupId);
+        groupService.addContactToGroup(groupId, contactId, principal);
+
+        return new ResponseEntity<>("Contact added to group successfully", HttpStatus.OK);
+    }
+
 }
